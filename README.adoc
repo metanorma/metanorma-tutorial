@@ -1,0 +1,118 @@
+= Tutorial document based on the ISO Rice document (written in Metanorma-ISO)
+
+This repository contains exercises for the beginner https://www.metanorma.org/tutorial/tutorial_start[Metanorma tutorial]. The document is based on ISO's https://www.iso.org/publication/PUB100407.html["`Rice document`"] and is written in https://github.com/metanorma/metanorma-iso[Metanorma-ISO].
+
+== Prerequisites
+* Installation of https://git-scm.com/downloads[git]
+* Installation of https://www.metanorma.org/install/[Metanorma]
++
+NOTE: Docker allows you to get started quicker than a local installation, because it already contains all dependencies.
+* Text editor of your choice, for example https://code.visualstudio.com/download[VS Code] or https://flight-manual.atom.io/getting-started/sections/installing-atom/[Atom]
+
+== Fetching the document
+
+1. Open a new terminal.
+2. Go to the directory you want to save the tutorial repository in. For example: 
++ 
+[source,sh]
+----
+$ cd Documents/metanorma_tutorial
+----
+
+3. Run the following command to copy the repository onto your machine:
++
+[source,sh]
+----
+git clone https://github.com/metanorma/metanorma-tutorial/
+----
+
+== Generating a document
+
+Refer to the https://www.metanorma.com/overview/getting-started/[Metanorma quickstart] for a primer on creating Metanorma-ISO documents.
+
+
+
+
+
+== Running via Docker or locally
+
+If you have installed the build tools locally, and wish to run the
+locally-installed compilation tools, there is nothing further to set.
+
+If you don't want to deal with local dependencies, use the docker:
+
+[source,sh]
+----
+docker run -v "$(pwd)":/metanorma -w /metanorma -it metanorma/mn metanorma site generate
+----
+
+
+== Building The Document
+
+[source,sh]
+----
+metanorma site generate
+----
+
+
+== Source files provided in this repo
+
+* `iso-rice-en.adoc`: Metanorma-ISO markup source document for the Rice document, in English
+
+* `iso-rice-en-sections.adoc`: Metanorma-ISO markup source document for the Rice document, referencing the individual files in `sections/*`
+
+* `sections/*`: The Metanorma-ISO markup source document for the Rice document, broken up into separate files for each section
+
+
+== Description of generated artifacts
+
+* `{filename}-{lang}.xml`: Metanorma-ISO XML output corresponding to the `{filename}-{lang}.adoc` source
+
+* `{filename}-{lang}.html`: Metanorma-ISO HTML output corresponding to the `{filename}-{lang}.adoc` source
+
+* `{filename}-{lang}-alt.html`: Metanorma-ISO "`readability-optimized`" HTML output corresponding to the `{filename}-{lang}.adoc` source
+
+
+== Managing an IsoDoc
+
+=== General
+
+The Rice document is given here both as a single source document and broken up into separate files, to illustrate both ways of managing Metanorma content.
+
+=== Single file
+
+There are two document examples provided here:
+
+* `iso-rice-en.adoc`: the Rice document in English
+* `iso-rice-zh.adoc`: the Rice document as translated to Chinese
+
+For each language:
+
+* the file `iso-rice-{lang}.adoc` provides the document header
+* the file `body/body-{lang}.adoc` provides the content body.
+
+
+=== Multiple files
+
+The document `iso-rice-en-sections.adoc` includes the document header and the following files.
+
+The section files are listed in order of appearance in the document, and each corresponds to a first-level clause of the Rice document:
+
+* `00-foreword.adoc`: Foreword
+* `00-introduction.adoc`: Introduction
+* `01-scope.adoc`: Scope
+* `02-normref.adoc`: Normative references
+* `03-termdef.adoc`: Terms and definitions
+* `04-specifications.adoc`: Clause 4: Specifications
+* `05-sampling.adoc`: Clause 5: Sampling
+* `06-testmethods.adoc`: Clause 6: Test Methods
+* `07-testreport.adoc`: Clause 7: Test Report
+* `08-packaging.adoc`: Clause 8: Packaging
+* `09-marking.adoc`: Clause 9: Marking
+* `aa-annex-a.adoc`: Annex A
+* `ab-annex-b.adoc`: Annex B
+* `ac-annex-c.adoc`: Annex C
+* `ad-annex-d.adoc`: Annex D
+* `ae-annex-e.adoc`: Annex E (not in original Rice document, included to illustrate further formatting options)
+* `b0-bibliography.adoc`: Bibliography
+

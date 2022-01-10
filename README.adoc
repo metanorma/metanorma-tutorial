@@ -1,13 +1,25 @@
-= Tutorial document based on the ISO Rice document (written in Metanorma-ISO)
+= How to use the Metanorma Tutorial repository
 
-This repository contains exercises for the beginner https://www.metanorma.org/tutorial/tutorial_start[Metanorma tutorial]. The document is based on ISO's https://www.iso.org/publication/PUB100407.html["`Rice document`"] and is written in https://github.com/metanorma/metanorma-iso[Metanorma-ISO].
+This repository contains exercises for the beginner https://www.metanorma.org/tutorial/tutorial_start[Metanorma tutorial]. 
+The document is based on ISO's https://www.iso.org/publication/PUB100407.html["`Rice document`"] and is written in https://github.com/metanorma/metanorma-iso[Metanorma-ISO]. 
+Please note that standard organization has different needs. Therefore, each Metanorma AsciiDoc flavor has slightly different document headers (metadata) and may require a different document structure.
+
+== Source files provided in this repo
+
+* `iso-rice-en.adoc`: Metanorma-ISO markup source document for the Rice document, in English
+* `iso-rice-en-sections.adoc`: Metanorma-ISO markup source document for the Rice document, referencing the individual files in `sections/*`
+* `sections/*`: The Metanorma-ISO markup source document for the Rice document, broken up into separate files for each section
 
 == Prerequisites
+
+To write and compile Metanorma documents yourself, you need:
+
 * Installation of https://git-scm.com/downloads[git]
 * Installation of https://www.metanorma.org/install/[Metanorma]
 +
 NOTE: Docker allows you to get started quicker than a local installation, because it already contains all dependencies.
 * Text editor of your choice, for example https://code.visualstudio.com/download[VS Code] or https://flight-manual.atom.io/getting-started/sections/installing-atom/[Atom]
+* Familiarity with the command line
 
 == Fetching the document
 
@@ -16,7 +28,7 @@ NOTE: Docker allows you to get started quicker than a local installation, becaus
 + 
 [source,sh]
 ----
-$ cd Documents/metanorma_tutorial
+$ cd Documents/Metanorma
 ----
 
 3. Run the following command to copy the repository onto your machine:
@@ -26,70 +38,96 @@ $ cd Documents/metanorma_tutorial
 git clone https://github.com/metanorma/metanorma-tutorial/
 ----
 
-== Generating a document
+== Writing Metanorma documents
 
-Refer to the https://www.metanorma.com/overview/getting-started/[Metanorma quickstart] for a primer on creating Metanorma-ISO documents.
+If you are not yet familiar with Metanorma and AsciiDoc, this repository, together with the https://www.metanorma.org/tutorial/tutorial_start[Metanorma tutorial], will help you getting started. 
 
+If you are already familiar with Metanorma and need a refresher on how to compile a document, read the following section
 
+== Compiling a Metanorma document
+Depending on the type of installation and your OS, the command to compile a Metanorma is slightly different.
 
+=== Local installation (Windows, macOS, Linux)
 
+If you have installed Metanorma and its dependencies on your machine, you can generate a document like this:
 
-== Running via Docker or locally
-
-If you have installed the build tools locally, and wish to run the
-locally-installed compilation tools, there is nothing further to set.
-
-If you don't want to deal with local dependencies, use the docker:
-
+1. Open a new terminal.
+2. Go to the directory where your Metanorma document(s) are stored. For example: 
++ 
 [source,sh]
 ----
-docker run -v "$(pwd)":/metanorma -w /metanorma -it metanorma/mn metanorma site generate
+$ cd Documents/Metanorma/metanorma-tutorial
 ----
 
-
-== Building The Document
-
+3. Use the following command to compile a Metanorma document. To learn more about the command syntax and options, read the https://www.metanorma.org/software/metanorma-cli/docs/usage/[metanorma-cli documentation].
++
 [source,sh]
 ----
-metanorma site generate
+metanorma compile iso-rice-en.adoc
 ----
 
+=== Running Metanorma in Docker
 
-== Source files provided in this repo
+If you don't want to deal with local dependencies, use the Docker image.
+If you are not yet familiar with Docker, the learning curve is a bit steeper than with a local installation, but it pays off.
+Docker provides a great https://docs.docker.com/get-started/[Getting started tutorial].
+ 
 
-* `iso-rice-en.adoc`: Metanorma-ISO markup source document for the Rice document, in English
+*Prerequisites*
 
-* `iso-rice-en-sections.adoc`: Metanorma-ISO markup source document for the Rice document, referencing the individual files in `sections/*`
+* Installation of https://docs.docker.com/get-docker/[Docker]
+* Metanorma https://hub.docker.com/r/metanorma/metanorma[Docker image]
+* Familiarity with Docker. 
 
-* `sections/*`: The Metanorma-ISO markup source document for the Rice document, broken up into separate files for each section
+To compile a Metanorma document using Docker: 
 
+1. Open a new terminal.
+2. Go to the directory where your Metanorma document(s) are stored. For example: 
++ 
+[source,sh]
+----
+$ cd Documents/Metanorma/metanorma-tutorial
+----
+3. Start the container and compile the document. To learn more about the command syntax and options, read the https://www.metanorma.org/software/metanorma-cli/docs/usage/[metanorma-cli documentation].
++
+.Docker on Linux and macOS
+[source,sh]
+----
+docker run -v "$(pwd)":/metanorma/ -w /metanorma metanorma/metanorma metanorma compile -t iso iso-rice-en.adoc
+----
++
+.Docker on Windows
+[source,sh]
+----
+docker run -v "%cd%":/metanorma/ -w /metanorma metanorma/metanorma metanorma compile -t iso iso-rice-en.adoc
+----
 
 == Description of generated artifacts
 
+While Metanorma runs, it generates the following files from the AsciiDoc input:
+
 * `{filename}-{lang}.xml`: Metanorma-ISO XML output corresponding to the `{filename}-{lang}.adoc` source
-
 * `{filename}-{lang}.html`: Metanorma-ISO HTML output corresponding to the `{filename}-{lang}.adoc` source
-
 * `{filename}-{lang}-alt.html`: Metanorma-ISO "`readability-optimized`" HTML output corresponding to the `{filename}-{lang}.adoc` source
+* `{filename}-{lang}.pdf`: PDF output, formatted according to ISO's specification.
 
+== Managing complex Metanorma documents
 
-== Managing an IsoDoc
-
-=== General
-
-The Rice document is given here both as a single source document and broken up into separate files, to illustrate both ways of managing Metanorma content.
+The Rice document is given here both as a single source document and broken up into separate files, to illustrate both ways of managing Metanorma content. 
 
 === Single file
 
-There are two document examples provided here:
+The single-file setup uses these files:
 
-* `iso-rice-en.adoc`: the Rice document in English
-* `iso-rice-zh.adoc`: the Rice document as translated to Chinese
+* `iso-rice-en.adoc`: the Rice document in English, including the document header
+* the file `body/body-en.adoc` provides the content body.
 
-For each language:
+*Pro*: 
+Shorter documents, which are authored by only one person, could be set up as a single file. 
+This approach allows you to search and replace within a single document.
 
-* the file `iso-rice-{lang}.adoc` provides the document header
-* the file `body/body-{lang}.adoc` provides the content body.
+*Con*: 
+Long documents can become hard to work with in text editors. If more than one person works on the same file, you might run into merge conflicts that need to be resolved manually.
 
 
 === Multiple files
@@ -116,3 +154,19 @@ The section files are listed in order of appearance in the document, and each co
 * `ae-annex-e.adoc`: Annex E (not in original Rice document, included to illustrate further formatting options)
 * `b0-bibliography.adoc`: Bibliography
 
+*Pro*: 
+A multi-file approach grants you modularity, which has a number of benefits: 
+
+* It's possible to reuse chapters.
+* You can troubleshoot documents easier.
+* When you separate the header from the content, you can generate standards to be published in more than one organization, for example ISO and OGC documents. 
+* You can split the work across different files to minimize problems with version control.
+
+*Con*: 
+Operations like "search and replace" become a bit more tedious, because you have to look at multiple files to catch each instance of the word (or something else) you want to update. However, this weak point can be beat by tools like Visual Studio code that can search throughout a whole repository.
+
+== Summary
+
+The best way to learn Metanorma is to follow along the https://www.metanorma.org/tutorial/tutorial_start[Metanorma tutorial]. This repository contains all exercises to help you get a grasp of Metanorma AsciiDoc. 
+
+If you already have a bit experience, feel free to look through the https://github.com/orgs/metanorma/repositories?q=mn-samples-[flavor-specific sample repositories].

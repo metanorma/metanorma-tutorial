@@ -1,14 +1,16 @@
-= How to use the Metanorma Tutorial repository
+= How to use the Metanorma tutorial repository
 
 This repository contains exercises for the beginner https://www.metanorma.org/tutorial/tutorial_start[Metanorma tutorial]. 
-The document is based on ISO's https://www.iso.org/publication/PUB100407.html["`Rice document`"] and is written in https://github.com/metanorma/metanorma-iso[Metanorma-ISO]. 
+The document is based on OGC's http://docs.opengeospatial.org/is/14-065/14-065.html["OGC(R) WPS 2.0.2 Interface Standard Corrigendum 2"] and is written in https://github.com/metanorma/metanorma-ogc[Metanorma-OGC]. 
 Please note that standard organization has different needs. Therefore, each Metanorma AsciiDoc flavor has slightly different document headers (metadata) and may require a different document structure.
 
 == Source files provided in this repo
 
-* `iso-rice-en.adoc`: Metanorma-ISO markup source document for the Rice document, in English
-* `iso-rice-en-sections.adoc`: Metanorma-ISO markup source document for the Rice document, referencing the individual files in `sections/*`
-* `sections/*`: The Metanorma-ISO markup source document for the Rice document, broken up into separate files for each section
+* `OGC-WPS-single-file.adoc`: Metanorma-OGC markup source document for the WPS 2.0.2 Interface Standard Corrigendum 2 
+* `OGC-WPS-sections.adoc`: Metanorma-OGC markup source document for the WPS 2.0.2 Interface Standard Corrigendum 2 document, referencing the individual files in `sections/*`
+* `sections/*`: The Metanorma-OGC markup source document for the WPS 2.0.2 Interface Standard Corrigendum 2 document, broken up into separate files for each section
+* `images/*`: Contains the referenced images
+* `rendered_output/*`: This folder contains pre-rendered versions of the Metanorma document, so that you know what you are working towards. 
 
 == Prerequisites
 
@@ -42,9 +44,10 @@ git clone https://github.com/metanorma/metanorma-tutorial/
 
 If you are not yet familiar with Metanorma and AsciiDoc, this repository, together with the https://www.metanorma.org/tutorial/tutorial_start[Metanorma tutorial], will help you getting started. 
 
-If you are already familiar with Metanorma and need a refresher on how to compile a document, read the following section
+If you are already familiar with Metanorma and need a refresher on how to compile a document, read the following section.
 
 == Compiling a Metanorma document
+
 Depending on the type of installation and your OS, the command to compile a Metanorma is slightly different.
 
 === Local installation (Windows, macOS, Linux)
@@ -61,9 +64,11 @@ $ cd Documents/Metanorma/metanorma-tutorial
 
 3. Use the following command to compile a Metanorma document. To learn more about the command syntax and options, read the https://www.metanorma.org/software/metanorma-cli/docs/usage/[metanorma-cli documentation].
 +
+NOTE: The https://github.com/fontist/fontist[fontist] automatically installs all needed fonts. The `--agree-to-terms` option agrees to all font license agreements that come up during the compilation process. If you don't set this option, you will be asked to agree to the licenses during the compilation process which might break it.
++
 [source,sh]
 ----
-metanorma compile iso-rice-en.adoc
+metanorma compile sources/standard/OGC-WPS-single-file.adoc --agree-to-terms
 ----
 
 === Running Metanorma in Docker
@@ -71,56 +76,74 @@ metanorma compile iso-rice-en.adoc
 If you don't want to deal with local dependencies, use the Docker image.
 If you are not yet familiar with Docker, the learning curve is a bit steeper than with a local installation, but it pays off.
 Docker provides a great https://docs.docker.com/get-started/[Getting started tutorial].
- 
+
 
 *Prerequisites*
 
 * Installation of https://docs.docker.com/get-docker/[Docker]
 * Metanorma https://hub.docker.com/r/metanorma/metanorma[Docker image]
++ 
+NOTE: Install the `metanorma/metanorma` image for a stable release.
+
 * Familiarity with Docker. 
 
 To compile a Metanorma document using Docker: 
 
 1. Open a new terminal.
-2. Go to the directory where your Metanorma document(s) are stored. For example: 
+2. Start Docker using Docker Desktop.
+3. Go to the directory where your Metanorma document(s) are stored. For example: 
 + 
 [source,sh]
 ----
 $ cd Documents/Metanorma/metanorma-tutorial
 ----
-3. Start the container and compile the document. To learn more about the command syntax and options, read the https://www.metanorma.org/software/metanorma-cli/docs/usage/[metanorma-cli documentation].
+4. Start the container and compile the document. To learn more about the command syntax and options, read the https://www.metanorma.org/software/metanorma-cli/docs/usage/[metanorma-cli documentation].
++
+NOTE: The https://github.com/fontist/fontist[fontist] automatically installs all needed fonts. The `--agree-to-terms` option agrees to all font license agreements that come up during the compilation process. If you don't set this option, you will be asked to agree to the licenses during the compilation process which might break it.
 +
 .Docker on Linux and macOS
 [source,sh]
 ----
-docker run -v "$(pwd)":/metanorma/ -w /metanorma metanorma/metanorma metanorma compile -t iso iso-rice-en.adoc
+docker run -v "$(pwd)":/metanorma/ -w /metanorma metanorma/metanorma metanorma compile -t ogc sources/standard/OGC-WPS-single-file.adoc --agree-to-terms
 ----
 +
 .Docker on Windows
 [source,sh]
 ----
-docker run -v "%cd%":/metanorma/ -w /metanorma metanorma/metanorma metanorma compile -t iso iso-rice-en.adoc
+docker run -v "%cd%":/metanorma/ -w /metanorma metanorma/metanorma metanorma compile -t ogc sources/standard/OGC-WPS-single-file.adoc --agree-to-terms
 ----
+
+//// 
+docker run \
+  -v "$(pwd)":/metanorma \
+  -v "${HOME}/.fontist/fonts":/config/fonts \
+  -w /metanorma \
+  metanorma/metanorma \
+  metanorma compile document.adoc --agree-to-terms
+
+This command would help you cache the fonts so as not to download them again next time.
+//// 
 
 == Description of generated artifacts
 
 While Metanorma runs, it generates the following files from the AsciiDoc input:
 
-* `{filename}-{lang}.xml`: Metanorma-ISO XML output corresponding to the `{filename}-{lang}.adoc` source
-* `{filename}-{lang}.html`: Metanorma-ISO HTML output corresponding to the `{filename}-{lang}.adoc` source
-* `{filename}-{lang}-alt.html`: Metanorma-ISO "`readability-optimized`" HTML output corresponding to the `{filename}-{lang}.adoc` source
-* `{filename}-{lang}.pdf`: PDF output, formatted according to ISO's specification.
+* `{filename}.xml`: Metanorma-OGC XML output corresponding to the `{filename}.adoc` source
+* `{filename}.rxl`: Document that contains Relaton XML references
+* `{filename}.html`: Metanorma-OGC HTML output corresponding to the `{filename}.adoc` source
+* `{filename}.doc`: Metanorma-OGC Word output corresponding to the `{filename}.adoc` source
+* `{filename}.pdf`: PDF output, formatted according to OGC's specification.
+* `{filename}.err`: File that contains error messages from the compilation process. Note: Not all errors cause the build to fail, and it's common to have some minor errors. As long as the output works and looks as expected, you do not need to start troubleshooting.
 
 == Managing complex Metanorma documents
 
-The Rice document is given here both as a single source document and broken up into separate files, to illustrate both ways of managing Metanorma content. 
+== Managing complex Metanorma documents
+
+The WPS 2.0.2 Interface Standard Corrigendum 2 document is given here both as a single source document and broken up into separate files, to illustrate both ways of managing Metanorma content. 
 
 === Single file
 
-The single-file setup uses these files:
-
-* `iso-rice-en.adoc`: the Rice document in English, including the document header
-* the file `body/body-en.adoc` provides the content body.
+The single-file setup is illustrated in the file `OGC-WPS-single-file.adoc`. The document header (metadata) as well as all content clauses are written within the same AsciiDoc document.
 
 *Pro*: 
 Shorter documents, which are authored by only one person, could be set up as a single file. 
@@ -132,27 +155,23 @@ Long documents can become hard to work with in text editors. If more than one pe
 
 === Multiple files
 
-The document `iso-rice-en-sections.adoc` includes the document header and the following files.
+The document `OGC-WPS-sections.adoc` includes the document header and the following files.
 
-The section files are listed in order of appearance in the document, and each corresponds to a first-level clause of the Rice document:
+The section files are listed in order of appearance in the document, and each corresponds to a first-level clause of the document:
 
-* `00-foreword.adoc`: Foreword
-* `00-introduction.adoc`: Introduction
+* `00-abstract.adoc`: Foreword
 * `01-scope.adoc`: Scope
-* `02-normref.adoc`: Normative references
-* `03-termdef.adoc`: Terms and definitions
-* `04-specifications.adoc`: Clause 4: Specifications
-* `05-sampling.adoc`: Clause 5: Sampling
-* `06-testmethods.adoc`: Clause 6: Test Methods
-* `07-testreport.adoc`: Clause 7: Test Report
-* `08-packaging.adoc`: Clause 8: Packaging
-* `09-marking.adoc`: Clause 9: Marking
-* `aa-annex-a.adoc`: Annex A
-* `ab-annex-b.adoc`: Annex B
-* `ac-annex-c.adoc`: Annex C
-* `ad-annex-d.adoc`: Annex D
-* `ae-annex-e.adoc`: Annex E (not in original Rice document, included to illustrate further formatting options)
-* `b0-bibliography.adoc`: Bibliography
+* `02-conformance.adoc`: Conformance 
+* `03-references.adoc`: Normative References
+* `04-terms-def.adoc`: Terms and Definitions
+* `05-conventions.adoc`: Conventions
+* `06-wps-conceptual-model.adoc`: WPS Conceptual Model
+* `07-wps-native-process-model.adoc`: WPS Native Process Model
+* `08-wps-native-process-model-encoding.adoc`: WPS Native Process Model Encoding
+* `09-common-wps-service-model.adoc`: Common WPS Service Model
+* `aa-abstract-test-suite.adoc`: Annex A
+* `ab-xml-examples.adoc`: Annex B
+* `az-bibliography.adoc`: Bibliography
 
 *Pro*: 
 A multi-file approach grants you modularity, which has a number of benefits: 

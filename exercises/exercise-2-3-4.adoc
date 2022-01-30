@@ -1,0 +1,26 @@
+= OGC(R) WPS 2.0.2 Interface Standard Corrigendum 2
+:edition: 2.0.2
+:doctype: standard
+:committee: technical
+:workingGroup:
+:fullname: Your name 
+:role: editor
+:docnumber: 14-065r2
+:external-id: http://www.opengis.net/doc/IS/wps/2.0.2
+:published-date: 2015-03-05
+:copyright-year: 2015
+:mn-document-class: ogc
+:status: published
+:language: en
+:imagesdir: images
+:local-cache-only:
+:data-uri-image:
+
+
+== Introduction
+
+Most of the OGC standards depend on a generalized architecture captured in a set of documents collectively called the Abstract Specification, which describes a basic data model for representing geographic features. Atop the Abstract Specification members have developed and continue to develop a growing number of specifications, or standards to serve specific needs for interoperable location and geospatial technology, including GIS.
+
+//Insert image here.
+
+

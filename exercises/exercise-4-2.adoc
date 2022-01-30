@@ -1,0 +1,940 @@
+= OGC(R) WPS 2.0.2 Interface Standard Corrigendum 2
+:edition: 2.0.2
+:doctype: standard
+:docsubtype: implementation
+:committee: technical
+:workingGroup:
+:fullname: Matthias Mueller
+:role: editor
+:fullname_2: Benjamin Pross
+:role_2: editor
+:docnumber: 14-065r2
+:external-id: http://www.opengis.net/doc/IS/wps/2.0.2
+:received-date: 2014-11-25
+:issued-date: 2015-01-27
+:published-date: 2015-03-05
+:confirmed-date: 2018-02-16
+:copyright-year: 2015
+:mn-document-class: ogc
+:language: en
+:submitting-organizations: TU Dresden; 52°North; Intergraph Corporation; Image Matters LLC; CRP Henri Tudor; Airbus Defence and Space
+:imagesdir: /sources/standard/images
+:local-cache-only:
+:data-uri-image:
+
+
+.Preface
+This standard is a continuation of WPS 1.0, a standard for web-based processing of geospatial data. It incorporates a range of change requests that have been submitted since the release of WPS 1.0 and further follows the OGC standard for modular specifications [OGC 08-131r3].
+
+In contrast to the prior version, WPS 2.0 provides a core conceptual model that may be used to specify a WPS in different architectures such as REST or SOAP.
+
+The WPS process model has been encapsulated into separate requirements and conformance classes, so it may be used independently from WPS servers in process catalogs and metadata records. The expressive power of process descriptions has been enhanced by permitting structured (or nested) inputs and outputs. The concept of process profiles has been clarified and extended to support process descriptions at different levels of abstraction.
+
+Conversely, the process model itself has been largely decoupled from the WPS protocol, allowing the use of other domain-specific descriptions of processes, e.g. those defined in SensorML, and to execute them on a WPS server.
+
+This specification also provides a Basic WPS conformance class that comprises the synchronous and asynchronous execution protocol, the WPS process model, and implements HTTP/POST+XML and HTTP/GET+KVP encodings.
+
+Future work will target the definition of process interfaces for common processes based on the process model conformance class. Such profiles will encourage the development of well-defined, reliable, interoperable and exchangeable process implementations.
+
+If OGC baseline and related specifications should further progress towards REST-oriented interfaces, the development of a REST-oriented WPS interface standard should be considered.
+
+
+[abstract]
+== Abstract
+In many cases geospatial or location data, including data from sensors, must be processed before the information can be used effectively. The OGC Web Processing Service (WPS) Interface Standard provides a standard interface that simplifies the task of making simple or complex computational processing services accessible via web services. Such services include well-known processes found in GIS software as well as specialized processes for spatio-temporal modeling and simulation. While the OGC WPS standard was designed with spatial processing in mind, it can also be used to readily insert non-spatial processing tasks into a web services environment.
+
+
+[[prefatory-clause]]
+== Submitters
+
+[%unnumbered]
+|===
+|Name |Representing |OGC member
+
+|Matthias Müller |TU Dresden |Yes
+|Benjamin Pross |52°North |Yes
+|Stan Tillman |Intergraph Corporation |Yes
+|Jeff Yutzler |Image Matters LLC |Yes
+|Luís de Sousa |CRP Henri Tudor |Yes
+|Arnaud Cauchy |Airbus Defence & Space |Yes
+|===
+
+
+
+// Additional preliminary elements
+
+[[prefatory-clause]]
+== Introduction
+
+The WPS standard provides a robust, interoperable, and versatile protocol for process execution on web services. It supports both immediate processing for computational tasks that take little time and asynchronous processing for more complex and time consuming tasks. Moreover, the WPS standard defines a general process model that is designed to provide an interoperable description of processing functions. It is intended to support process cataloguing and discovery in a distributed environment.
+
+== Scope
+This document specifies the interface to a general purpose Web Processing Service (WPS). A WPS is a web service that enables the execution of computing processes and the retrieval of metadata describing their purpose and functionality. Typically, these processes combine raster, vector, and/or coverage data with well-defined algorithms to produce new raster, vector, and/or coverage information.
+
+The WPS protocol supports both synchronous and asynchronous execution of processes. Synchronous execution may be used in simple and quick computation scenarios, where the data processing takes little to almost no time. Asynchronous processing is particularly well suited for complex computation scenarios which may take significant time.
+
+The specification uses a core and extensions model to organize its features:
+
+. A core conceptual model, defining basic requirements for a web based processing service,
+. A process model to support the description and discovery of processes on the web,
+. A basic data model that supports arbitrary (standard or non-standard) data formats for inputs and outputs,
+. A WPS service model and encoding based on OGC baseline standards, and
+. A Dismiss extension to allow clients to terminate asynchronous processing jobs.
+
+
+== Conformance
+Conformance with this standard shall be checked using all the relevant tests specified in <<annex-abstract-test-suite>> (normative) of this document. The framework, concepts, and methodology for testing, and the criteria to be achieved to claim conformance are specified in the OGC Compliance Testing Policies and Procedures and the OGC Compliance Testing web site footnote:[www.opengeospatial.org/cite].
+
+.Conformance classes related to WPS 2.0
+[cols="3"]
+|===
+^h|Conformance Class	^h|Description	^h|Clause
+
+|http://www.opengis.net/spec/WPS/2.0/conf/service/profile/**basic-wps**	|Basic WPS service profile	|<<annex-subsec-basic-wps-conformace-class>>
+|http://www.opengis.net/spec/WPS/2.0/conf/service/**synchronous-wps**	|Synchronous WPS	|
+|http://www.opengis.net/spec/WPS/2.0/conf/service/**asynchronous-wps**	|Asynchronous WPS	|
+|http://www.opengis.net/spec/WPS/2.0/conf/**process-model-encoding**	|WPS process model encoding	|
+|http://www.opengis.net/spec/WPS/2.0/conf/service/**dismiss-extension**	|Dismiss extension	|
+
+|===
+
+
+[bibliography]
+== Normative References
+
+* [[[ogc-06-121r9,OGC 06-121r9]]], OGC 06-121r9, OGC Web Service Common Specification, version 2.0
+
+* [[[ogc-08-131r3,OGC 08-131r3]]], OGC 08-131r3 -- The Specification Model -- A Standard for Modular Specifications
+
+* [[[ietf-rfc-4646,IETF RFC 4646]]], IETF RFC 4646: Tags for Identifying Languages
+
+* [[[ietf-rfc-3986,IETF RFC 3986]]], IETF RFC 3986: Uniform Resource Identifier (URI): Generic Syntax
+
+* [[[iso-8601-2004,ISO 8601:2004]]], ISO 8601:2004, Data elements and interchange formats -- Information interchange -- Representation of dates and times
+
+* [[[xml-schema-part2,W3C xmlschema-2]]], XML Schema Part 2: Datatypes Second Edition, W3C Recommendation 28 October 2004.
+
+
+== Terms and Definitions
+This document uses the terms defined in Sub-clause 5.3 of [OGC 06-121r9], which is based on the ISO/IEC Directives, Part 2, Rules for the structure and drafting of International Standards. In particular, the word "`shall`" (not "`must`") is the verb form used to indicate a requirement to be strictly followed to conform to this standard.
+
+For the purposes of this document, the following additional terms and definitions apply.
+
+
+=== dataset
+
+collection of data, published or curated by a single agent, and available for access or download in one or more formats
+
+[.source]
+<<dcat>>
+
+NOTE: The use of 'collection' in the definition from <<dcat,[DCAT]>> is broader than the use of the term collection in this specification.
+
+=== distribution
+
+represents an accessible form of a *dataset*
+
+[.source]
+<<dcat>>
+
+[example]
+a downloadable file, an RSS feed or an API.
+
+=== feature
+alt:[characteristic]
+deprecated:[character]
+
+abstraction of real world phenomena
+
+[.source]
+<<iso19101,ISO 19101-1:2014>>, added alternative term for "`characteristic`" and deprecated term "`character`".
+
+NOTE: For those unfamiliar with the term 'feature', the explanations on https://www.w3.org/TR/sdw-bp/#spatial-things-features-and-geometry[Spatial Things, Features and Geometry] in the W3C/OGC Spatial Data on the Web Best Practice document provide more detail.
+
+[[subsec-process]]
+=== Process
+
+A *process* p is a function that for each input returns a corresponding output
+
+[%unnumbered]
+[stem]
+++++
+mu: X -> Y
+++++
+
+where stem:[X] denotes the domain of arguments x and stem:[Y] denotes the co-domain of values y. Within this specification, process arguments are referred to as process inputs and result values are referred to as process outputs. Processes that have no process inputs represent value generators that deliver constant or random process outputs.
+
+
+=== Process description
+
+A process description is an information model that specifies the interface of a process. A process description is used for a machine-readable description of the process itself but also provides some basic information about the process inputs and outputs.
+
+////
+=== Process input:
+Process inputs are the arguments of a process and refer to data provided to a process. Each process input is an identifiable item.
+
+=== Process output:
+Process outputs are the results of a process and refer to data returned by a process. Each process output is an identifiable item.
+
+=== Process profile:
+A process profile is a description of a process on an interface level. Process profiles may have different levels of abstraction and cover several aspects. On a generic level, a process profile may only refer to the provided functionality of a process, i.e. by giving a verbal or formal definition how the outputs are derived from the inputs. On a concrete level a process profile may completely define inputs and outputs including data type definitions and formats.
+
+=== WPS Server:
+A WPS Server is a web server that provides access to simple or complex computational processing services.
+
+=== Process offering:
+A process offering is an identifiable process that may be executed on a particular service instance. A process offering contains a process description as well as service-specific information about the supported execution protocols (e.g. synchronous and asynchronous execution).
+
+=== Process execution:
+The execution of a process is an action that calculates the outputs of a given process for a given set of data inputs.
+
+=== Job:
+The (processing) job is a server-side object created by a processing service for a particular process execution. A job may be latent in the case of synchronous execution or explicit in the case of asynchronous execution. Since the client has only oblique access to a processing job, a Job ID is used to monitor and control a job.
+
+=== Service profiles for WPS:
+A service profile for WPS is a conformance class that defines the general capabilities of a WPS server, by (1) specifying the supported service operations, (2) the process model, (3) the supported process execution modes, (4) the supported operation binding(s).
+
+////
+
+
+== Conventions
+This section provides details and examples for any conventions used in the document. Examples of conventions are symbols, abbreviations, use of XML schema, or special notes regarding how to read the document.
+
+=== Abbreviated terms
+
+GRS:: Coordinate Reference System
+
+GML:: Geography Markup Language
+
+HTTP:: Hypertext Transfer Protocol
+
+ISO:: International Organization for Standardization
+
+KVP:: Keyword Value Pair
+
+MIME:: Multipurpose Internet Mail Extensions
+
+OGC:: Open Geospatial Consortium
+
+UML:: Unified Modeling Language
+
+URI:: Universal Resource Identifier
+
+URL:: Uniform Resource Locator
+
+WPS:: Web Processing Service
+
+XML:: Extensible Markup Language
+
+
+=== Use of the Term "`Process`"
+The term process is one of the most used terms both in the information and geosciences domain. If not stated otherwise, this specification uses the term process as an umbrella term for any algorithm, calculation or model that either generates new data or transforms some input data into output data as defined in <<subsec-process>>.
+
+
+=== UML Notation
+Unified Modeling Language (UML) static structure diagrams appearing in this specification are used as described in section 5.2 of OGC06-121r9. Further, the following conventions hold:
+
+- UML elements having a package name of "`OWS Common`" are those defined in the UML model of OWS Common [OGC 06-121r9].
+- UML data type Any is used here as an equivalence to XML's xsd:any.
+- UML elements not qualified with a package name are those defined in this standard.
+
+The UML model data dictionary is specified herein in a series of tables. The contents of the columns in these tables are described in section 5.5 of [OGC 06-121r9]. The contents of these data dictionary tables are normative, including any table footnotes.
+
+=== Namespace Conventions
+The following namespaces are used in this document. The prefix abbreviations used constitute conventions used here, but are not normative. The namespaces to which the prefixes refer are normative, however.
+
+[%unnumbered]
+[cols="3"]
+|===
+^h|Prefix	^h|Namespace URI	^h|Description
+
+|ows	|http://www.opengis.net/ows/2.0	|OWS Common 2.0 XML Schema
+|xlink	|http://www.w3.org/1999/xlink	|Definitions for XLINK
+|xml	|http://www.w3.org/XML/1998/namespace	|XML (required for xml:lang)
+|xs	|http://www.w3.org/2001/XMLSchema	|XML Schema
+|===
+
+
+== WPS Conceptual Model
+The WPS service model defines basic properties of any WPS server. A WPS server is a web service that provides access to pre-defined processes and provides job control operations to instantiate, control and monitor processing jobs (<<fig-artifacts-of-the-wps>>).
+
+[[fig-artifacts-of-the-wps]]
+.Artifacts of the WPS service model
+image::fig-artifacts-of-the-wps.png []
+
+[requirement,type="class",label="http://www.opengis.net/spec/WPS/2.0/req/conceptual-model",obligation="requirement",subject="Derived information model, encoding, and software implementation"]
+====
+
+[requirement,type="general",label="/req/conceptual-model/discovery"]
+======
+Requirements class for service discovery.
+======
+
+[requirement,type="general",label="/req/conceptual-model/capabilities"]
+======
+Requirements class for service capabilities.
+======
+
+[recommendation,type="general",label="/req/conceptual-model/process-model"]
+======
+Requirements class for supported process models.
+======
+
+[requirement,type="general",label="/req/conceptual-model/job-control"]
+======
+Requirements class for job control.
+======
+
+[requirement,type="general",label="/req/conceptual-model/process-execution"]
+======
+Requirements class for process execution.
+======
+
+[requirement,type="general",label="/req/conceptual-model/data-transmission"]
+======
+Requirements class for data transmission between service and client.
+======
+
+[requirement,type="general",label="/req/conceptual-model/job-monitoring"]
+======
+Requirements class for job monitoring.
+======
+
+====
+
+
+=== Service Discovery
+Any WPS server shall be self-contained, i.e. provide an initial endpoint that can be used by a WPS client to determine the server's capabilities.
+
+[requirement,type="class",label="http://www.opengis.net/spec/WPS/2.0/req/conceptual-model/discovery",obligation="requirement",subject="Derived information model, encoding, and software implementation"]
+====
+
+[requirement,type="general",label="/req/conceptual-model/discovery/endpoint"]
+======
+All WPS servers shall have an initial end-point (HTTP URI).
+======
+
+[requirement,type="general",label="/req/conceptual-model/discovery/capabilities"]
+======
+The service shall provide a systematic discovery mechanism for all service capabilities.
+======
+
+[requirement,type="general",label="/req/conceptual-model/discovery/mechanism"]
+======
+The discovery mechanism for the service capabilities shall be predictable from the initial endpoint.
+======
+
+====
+
+=== Service Capabilities
+The basic capabilities of any WPS server fall into two categories: The first category comprises capabilities for process discovery and retrieval of process descriptions. The second category comprises capabilities to manage and monitor processing jobs.
+
+Since the processes provided by a WPS server may have different degrees of complexity, the server shall indicate the allowed job control capabilities mode per process offering.
+
+Further service capabilities, i.e. for secure communication and user authentication may be provided with the service but are neither covered nor restricted by this specification as long as they do not alter or change the semantics of other job control capabilities.
+
+
+
+[requirement,type="class",label="http://www.opengis.net/spec/WPS/2.0/req/conceptual-model/capabilities",obligation="requirement",subject="Derived information model, encoding, and software implementation",inherit="http://www.opengis.net/spec/WPS/2.0/req/conceptual-model/process"]
+====
+
+[requirement,type="general",label="/req/conceptual-model/capabilities/process-offering"]
+======
+The service shall provide a process offering capabilities. This capability informs service clients about the available processes.
+======
+
+[requirement,type="general",label="/req/conceptual-model/capabilities/process-model-identification"]
+======
+All process offerings shall provide an identifier for their process model used.
+======
+
+[requirement,type="general",label="/req/conceptual-model/capabilities/job-control"]
+======
+The service shall provide job control and monitoring capabilities. These capabilities enable service clients to manage processing jobs via the service interface.
+======
+
+[requirement,type="general",label="/req/conceptual-model/capabilities/job-control-per-process-offering"]
+======
+The service shall indicate the allowed job control capabilities per process.
+======
+
+====
+
+
+== WPS Native Process Model
+
+This section describes the information model of requirements. The corresponding XML and plain text encodings are specified in <<sec-wps-native-process-model-encoding>>.
+
+
+[requirement,type="class",label="http://www.opengis.net/spec/WPS/2.0/req/native-process/model",obligation="requirement",subject="Derived encoding and software implementation",inherit="http://www.opengis.net/spec/WPS/2.0/req/conceptual-model/process"]
+====
+
+[requirement,type="general",label="/req/native-process/model/descriptiontype"]
+======
+_Requirements class for the common description type._
+======
+
+[requirement,type="general",label="/req/native-process/model/io-format"]
+======
+_Requirements class for IO format._
+======
+
+[requirement,type="general",label="/req/native-process/model/datatypes"]
+======
+_Requirements class for data types._
+======
+
+[requirement,type="general",label="/req/native-process/model/description"]
+======
+_Requirements class for process description._
+======
+
+[requirement,type="general",label="/req/native-process/model/profile"]
+======
+_Requirements class for process profile._
+======
+
+====
+
+[[subsec-common-description-type]]
+=== Common Description Type
+Descriptive elements of processes, inputs and outputs are derived from the BasicIdentificationType provided by OWS Common (<<fig-descriptiontype-for-processes>>). Other descriptive information shall be recorded in the Metadata element in the form of simple links with an appropriate role identifier.
+
+
+[requirement,type="class",label="http://www.opengis.net/spec/WPS/2.0/req/native-process/model/description-type",obligation="requirement",subject="Derived encoding and software implementation",inherit="http://www.opengis.net/spec/WPS/2.0/req/conceptual-model/process;OWS Common 2.0 -- BasicDescriptionType"]
+====
+
+[requirement,type="general",label="/req/native-process/model/description-type/basic-identification"]
+======
+_Process descriptions as well as the associated process inputs and outputs shall be derived from the OWS Common BasicIdentificationType._
+======
+
+[requirement,type="general",label="/req/native-process/model/description-type/structure"]
+======
+_The DescriptionType shall comply with the structure defined in <<fig-descriptiontype-for-processes>> and <<tab-properties-of-the-descriptiontype-structure>>._
+======
+
+[requirement,type="general",label="/req/native-process/model/description-type/metadata"]
+======
+_For linking documentation material or other metadata with the process itself, its inputs and its outputs, the metadata element from the BasicIdentificationType shall be used._
+======
+
+[requirement,type="general",label="/req/native-process/model/description-type/metadata-simple-xlink"]
+======
+_The metadata elements within process descriptions shall be simple links with a human-readable title (<<tab-properties-of-the-metadata-structure>>)._
+======
+
+[requirement,type="general",label="/req/native-process/model/description-type/metadata-documentation-role"]
+======
+_The metadata elements for documentation shall use the role identifier "`http://www.opengis.net/spec/wps/2.0/def/process/description/documentation`"._
+======
+
+====
+
+[[fig-descriptiontype-for-processes]]
+.DescriptionType for processes, process inputs and process outputs UML class diagram
+image::fig-descriptiontype-for-processes.png[]
+
+[[tab-properties-of-the-descriptiontype-structure]]
+.Properties of the DescriptionType structure
+[cols="4"]
+|===
+^h|Names ^h|Definition ^h|Data type and values ^h|Multiplicity and use
+
+|Title |Title of the process, input, and output. Normally available for display to a human. |ows:Title |One (mandatory)
+|Abstract |Brief narrative description of a process, input, and output. Normally available for display to a human. |ows:Abstract |Zero or one (optional) Include when available and useful.
+|Keywords |Keywords that characterize a process, its inputs, and outputs. |ows:Keywords |Zero or more (optional) Include when available and useful.
+|Identifier |Unambiguous identifier of a process, input, and output. |ows:Identifier Value is a URI or HTTP-URI footnote:[Additional content such as separate code space and version attributes in the Identifier element are not allowed.] |One (mandatory)
+|Metadata |Reference to additional metadata about this item. |ows:Metadata Allowed values are specified in <<tab-properties-of-the-metadata-structure>>. |Zero or more (optional)
+|===
+
+[[tab-properties-of-the-metadata-structure]]
+.Properties of the Metadata structure
+[cols="4"]
+|===
+^h|Names ^h|Definition ^h|Data type and values ^h|Multiplicity and use
+
+|Title |Title of the documentation. Normally available for display to a human. |Character String |One (mandatory)
+|Link type |Type of the xlink, fixed to simple. |Character String, fixed to "`simple`". |One (mandatory)
+|Role |Role identifier, indicating the role of the linked document. |HTTP-URI |One (mandatory)
+|href |Reference to a documentation site for a process, input, or output. |HTTP-URI |One (mandatory)
+|===
+
+[[subsec-data-description-structure]]
+=== Data Description Structure
+The DataDescription structure contains basic properties for defining data inputs and outputs, including mimetype, encoding and schema. These properties specify supported formats for input and output data of computing processes. Any input or output item may support multiple formats, one of which is the default format. Processes may require that an input or output data set does not exceed a certain data volume.
+
+
+[requirement,type="class",label="http://www.opengis.net/spec/WPS/2.0/req/native-process/model/io-format",obligation="requirement",subject="Derived information model, encoding, and software implementation",inherit="http://www.opengis.net/spec/WPS/2.0/req/conceptual-model/process"]
+====
+
+[requirement,type="general",label="/req/native-process/model/io-format/structure"]
+======
+_Format descriptions of process inputs and outputs shall comply with the DataDescription structure defined in <<fig-datadescription-and-supported-formats>> and <<tab-format-properties>>._
+======
+
+[requirement,type="general",label="/req/native-process/model/io-format/default"]
+======
+_One of the formats defined in the DataDescription structure shall be the default format, i.e. have the attribute "`default`" set to "`true`"._
+======
+
+====
+
+[[fig-datadescription-and-supported-formats]]
+.DataDescription and supported formats UML class diagram
+image::fig-datadescription-and-supported-formats.png[]
+
+
+[[tab-format-properties]]
+.Format properties
+[cols="4"]
+|===
+^h|Names ^h|Definition ^h|Data type and values ^h|Multiplicity and use
+
+|mimetype |Media type of the data. |Character String |One (mandatory)
+|encoding |Encoding procedure or character set of the data (e.g. raw or base64) |Character String, fixed to "`simple`". |One (mandatory)
+|schema |Identification of the data schema. |HTTP-URI |One (mandatory)
+|maximumMegabytes |The maximum size of the input data, in megabytes. |Integer |Zero or one (optional)
+|default |Indicates that this format is the default format. footnote:format-properties-a[Defaults to FALSE if omitted.] |Boolean |Zero or one (conditional) footnote:format-properties-a[], footnote:[One of the formats included in the DataDescription structure shall have the attribute "`default`" set to "`true`".]
+|===
+
+
+[[sec-wps-native-process-model-encoding]]
+== WPS Native Process Model Encoding
+
+=== XML Schema Implementation
+This section specifies the XML encoding of the elements of the WPS native process model. The referred XML schema elements are provided by the associated schema package delivered with this standard and located at http://schemas.opengis.net/wps/2.0/.
+
+[requirement,type="class",label="http://www.opengis.net/spec/WPS/2.0/req/native-process/xml-encoding",obligation="requirement",subject="Derived encoding and software implementation",inherit="http://www.opengis.net/spec/WPS/2.0/req/native-process/model;OWS Common 2.0"]
+====
+
+[requirement,type="general",label="/req/native-process/xml-encoding/datatypes"]
+======
+_Requirements class for data type XML encoding._
+======
+
+[requirement,type="general",label="/req/native-process/xml-encoding/process"]
+======
+_Requirements class for process description XML encoding._
+======
+
+[requirement,type="general",label="/req/native-process/xml-encoding/generic-process"]
+======
+_Requirements class for generic profile XML encoding._
+======
+
+====
+
+
+==== Data Types
+The XML encoding of data types defines encoding rules for ComplexData, LiteralData, BoundingBoxData as well as their values.
+
+Examples for data type encodings are listed in <<annex-subsec-data-types>>.
+
+[requirement,type="class",label="http://www.opengis.net/spec/WPS/2.0/req/native-process/xml-encoding/datatypes",obligation="requirement",subject="Derived encoding and software implementation",inherit="http://www.opengis.net/spec/WPS/2.0/req/native-process/model/datatypes/complex-data;http://www.opengis.net/spec/WPS/2.0/req/native-process/model/datatypes/literal-data;http://www.opengis.net/spec/WPS/2.0/req/native-process/model/datatypes/bounding-box-data;OWS Common 2.0"]
+====
+
+[requirement,type="general",label="/req/native-process/xml-encoding/datatypes/schema"]
+======
+_The XML encoding of ComplexData, LiteralData, BoundingBoxData and their values shall comply with the XML schema provided by dataTypes.xsd._
+======
+[requirement,type="general",label="/req/native-process/xml-encoding/datatypes/mimetype"]
+======
+_The mime type for XML encoded literal and bounding box data values shall be "`text/xml`"._
+======
+
+====
+
+
+==== Process Description
+This clause specifies the XML encoding for the Process description.
+
+[requirement,type="class",label="http://www.opengis.net/spec/WPS/2.0/req/native-process/xml-encoding/process",obligation="requirement",subject="Derived software implementation",inherit="http://www.opengis.net/spec/WPS/2.0/req/native-process/model/description;OWS Common 2.0"]
+====
+
+[requirement,type="general",label="/req/native-process/xml-encoding/process/schema"]
+======
+_An XML encoded Process description shall be a valid XML document of the type wps:Process._
+======
+
+[requirement,type="general",label="/req/native-process/xml-encoding/process/content"]
+======
+_The content of the XML encoded Process description shall comply with the content of the information elements defined by the requirements class http://www.opengis.net/spec/WPS/2.0/req/native-process/model/description._
+======
+
+====
+
+
+==== Generic Process
+This clause specifies the XML encoding for the GenericProcess.
+
+[requirement,type="class",label="http://www.opengis.net/spec/WPS/2.0/req/native-process/xml-encoding/profile/generic-process",obligation="requirement",subject="Derived software implementation",inherit="http://www.opengis.net/spec/WPS/2.0/req/native-process/profile/generic;OWS Common 2.0"]
+====
+
+[requirement,type="general",label="/req/native-process/xml-encoding/profile/generic/schema"]
+======
+_An XML encoded description of a Generic Process shall be a valid XML document of the type wps:GenericProcess._
+======
+
+[requirement,type="general",label="/req/native-process/xml-encoding/profile/generic/content"]
+======
+_The content of the XML encoded description of a Generic Process shall comply with the content of the information elements defined by the requirements class http://www.opengis.net/spec/WPS/2.0/req/native-process/model/profile/generic._
+======
+
+====
+
+
+=== Plain Text Encoding for LiteralData and BoundingBoxData Values
+This clause specifies the plain text encoding of data types for literal and bounding box data values.
+
+
+[requirement,type="class",label="http://www.opengis.net/spec/WPS/2.0/req/native-process/plain-text-encoding/datatypes",obligation="requirement",subject="Derived encoding and software implementation",inherit="http://www.opengis.net/spec/WPS/2.0/req/native-process/model/datatypes/complex-data;http://www.opengis.net/spec/WPS/2.0/req/native-process/model/datatypes/literal-data;http://www.opengis.net/spec/WPS/2.0/req/native-process/model/datatypes/bounding-box-data;OWS Common 2.0"]
+====
+
+[requirement,type="general",label="/req/native-process/plain-text-encoding/datatypes/schema"]
+======
+_The plain text encoding of literal and bounding box values comply with the BNF schema below._
+======
+
+[requirement,type="general",label="/req/native-process/plain-text-encoding/datatypes/mimetype"]
+======
+_The mime type for plain text encoded literal and bounding box values shall be "`text/plain`"._
+======
+
+====
+
+[%unnumbered]
+[subs="macros"]
+----
+Literal values - BNF schema:
+literalvalue   = value *1("@datatype=" datatype) *1("@uom=" uom)
+value          = 1*VCHAR
+datatype  = URI
+uom       = URI
+
+Literal values - Example:
+70@datatype=http://www.w3.org/2001/XMLSchema#integer@uom=meter
+
+BoundingBox values - BNF schema footnote:[The dimensions attribute is included for compliance with the BoundingBox structure defined in OWS Common [OGC 06-121r9\]. However, its use should be generally avoided since the number of dimensions is already part of the CRS definition and usually superfluous.]:
+bbox      = lc_coords "," uc_coords ["," crs] ["," dimensions]
+lc_coords = number ["," number]
+uc_coords = number ["," number]
+number         = 1*DIGIT["." 1*DIGIT]
+crs       = 1*VCHAR
+dimensions = 1*DIGIT
+
+BoundingBoxData values - Examples:
+51.9,7.0,53.0,8.0,EPSG:4326
+
+51.9,7.0,53.0,8.0,http://www.opengis.net/def/crs/EPSG/0/4258
+----
+
+
+== Common WPS Service Model
+A Web Processing Service consists of processes and service operations. By definition, processes represent the computational functionality of a WPS, while service operations are used to interact with the WPS and in particular to use the service's process offerings.
+
+
+[requirement,type="class",label="http://www.opengis.net/spec/WPS/2.0/req/service/model",obligation="requirement",subject="Software implementation",inherit="http://www.opengis.net/spec/WPS/2.0/req/conceptual-model;OWS Common 2.0"]
+====
+
+[requirement,type="general",label="/req/service/model/data-transmission"]
+======
+_Requirements class for data transmission._
+======
+
+[requirement,type="general",label="/req/service/model/handling"]
+======
+_Requirements class for WPS service handling._
+======
+
+[requirement,type="general",label="/req/service/model/process-offering-properties"]
+======
+_Requirements class for common process offering properties._
+======
+
+[requirement,type="general",label="/req/service/model/status-info"]
+======
+_Requirements class for the status information document._
+======
+
+[requirement,type="general",label="/req/service/model/result"]
+======
+_Requirements class for the processing result document._
+======
+
+[requirement,type="general",label="/req/service/model/get-capabilities"]
+======
+_Requirements class for the GetCapabilities operation._
+======
+
+[requirement,type="general",label="/req/service/model/describe-process"]
+======
+_Requirements class for the DescribeProcess operation._
+======
+
+[requirement,type="general",label="/req/service/model/execute"]
+======
+_Requirements class for the Execute operation._
+======
+
+[requirement,type="general",label="/req/service/model/get-status"]
+======
+_Requirements class for the GetStatus operation._
+======
+
+[requirement,type="general",label="/req/service/model/get-result"]
+======
+_Requirements class for the GetResult operation._
+======
+
+====
+
+
+=== Overview of WPS Core Operations
+The WPS interface specified in this section supports retrieval and execution of processes for geospatial computation. For that purpose, the WPS service model specifies the following operations that may be invoked by a WPS client and performed by a WPS server footnote:[NOTE: Future extensions of this specification may introduce additional operations.]:
+
+GetCapabilities -- This operation allows a client to request information about the server's capabilities and processes offered.
+
+DescribeProcess -- This operation allows a client to request detailed metadata on selected processes offered by a server.
+
+Execute -- This operation allows a client to execute a process comprised of a process identifier, the desired data inputs and the desired output formats.
+
+GetStatus -- This operation allows a client to query status information of a processing job (conditional).
+
+GetResult -- This operation allows a client to query the results of a processing job (conditional).
+
+During a sequence of WPS requests, a client should first issue a GetCapabilities request to the server to obtain an up-to date listing of available processes. Then, it may issue a DescribeProcess request to find out more details about particular processes offered, including the supported data formats. To run a process with the desired input data, a client will issue an Execute request footnote:[NOTE: A WPS server can change its offering at any time, in particular between a GetCapabilities, a subsequent DescribeProcess, and a subsequent Execute request. Any quality of service (QoS) guarantees are within the responsibilities of the service provider and not covered by this standard.] (<<fig-common-sequence-wps-uml-diagram>>).
+
+The operations GetStatus and GetResult are used in conjunction with asynchronous execution. If a WPS server offers synchronous process execution only, these operations may not be implemented. Detailed guidance is provided by the corresponding profiles and conformance classes.
+
+[[fig-common-sequence-wps-uml-diagram]]
+.Common sequence of WPS operations UML sequence diagram
+image::fig-common-sequence-wps-uml-diagram.png[]
+
+=== Data Transmission
+Data exchange between WPS clients and servers requires an agreement on the general data exchange patterns and suitable communication protocols. Data may be sent to (received from) a WPS in two distinct ways: (1) by reference (using HTTP/GET or HTTP/POST), and (2) by value. Clients may send input data in either fashion. Output data may be requested in any fashion declared by the data transmission options defined for the process offering. Typically, large data inputs and outputs are delivered by reference.
+
+
+[requirement,type="class",label="http://www.opengis.net/spec/WPS/2.0/req/service/model/data-transmission",obligation="requirement",subject="Derived encoding and software implementation",inherit="http://www.opengis.net/spec/WPS/2.0/req/conceptual-model"]
+====
+
+[requirement,type="general",label="/req/service/model/data-transmission/data"]
+======
+_The data transmission structures for process inputs and outputs shall comply with the structures defined in <<fig-input-output-transmission-uml-class-diagram>>, <<tab-parts-of-the-inline-data-structure>>, <<tab-properties-of-the-dataencodingattributes-structure>>, <<tab-parts-of-the-reference-structure>>, <<tab-parts-of-the-requestbody-structure>>, and <<tab-parts-of-the-bodyreference-structure>>._
+======
+
+====
+
+
+[[fig-input-output-transmission-uml-class-diagram]]
+.Input and output data transmission structures UML class diagram
+image::fig-input-output-transmission-uml-class-diagram.png[]
+
+
+[[tab-parts-of-the-inline-data-structure]]
+.Parts of the inline Data structure
+[cols="4"]
+|===
+^h|Names ^h|Definition ^h|Data type and values ^h|Multiplicity and use
+
+|mimetype 3.3+|See <<tab-properties-of-the-dataencodingattributes-structure>> -- Properties of the DataEncodingAttributes structure.
+|encoding
+|schema
+|(any) footnote:[The data is embedded here as part of the Data element, in the mimeType, encoding, and schema indicated by the first three parameters if they exist, or by the relevant defaults.] |The actual input or output data. |Any type and value |One (mandatory)
+|===
+
+
+[[tab-properties-of-the-dataencodingattributes-structure]]
+.Properties of the DataEncodingAttributes structure
+[cols="4"]
+|===
+^h|Names ^h|Definition ^h|Data type and values ^h|Multiplicity and use
+
+|mimetype |MimeType of the data. |Character String |One (mandatory)
+|encoding |Well-known encoding or character set of the data. |URI "`raw`" shall be used for plain binary data "`base64`" shall be used for base64 encoded data Character set identifiers (e.g. "`UTF-8`") shall be used for text or CSV data. |Zero or one (conditional) footnote:dataencodingattributes-fn-a[This shall be provided if: 1) the process data item supports multiple encodings / schemas, and 2) the data is not of the default encoding / schema, and 3a) the schema / encoding cannot be retrieved from the data itself, or 3b) the encoding / schema information is deeply buried inside the data (i.e. not part of some header) and requires significant parsing effort.]
+|schema |Identification of the data schema. |URI |Zero or one (conditional) footnote:dataencodingattributes-fn-a[]
+|===
+
+[[tab-parts-of-the-reference-structure]]
+.Parts of the Reference structure
+[cols="4"]
+|===
+^h|Names ^h|Definition ^h|Data type and values ^h|Multiplicity and use
+
+|mimetype 3.3+|See <<tab-properties-of-the-dataencodingattributes-structure>> -- Properties of the DataEncodingAttributes structure.
+|encoding
+|schema
+|href |HTTP URI that points to the remote resource where the data may be retrieved. |HTTP URI |One (mandatory)
+|RequestBody |Request body element that is used for HTTP/POST requests to the above URL. If no request body is present, an HTTP/GET |Request should be used to retrieve the data. RequestBody structure, see <<tab-parts-of-the-requestbody-structure>>. |Zero or one (optional)
+|===
+
+[[tab-parts-of-the-requestbody-structure]]
+.Parts of the RequestBody structure
+[cols="4"]
+|===
+^h|Names ^h|Definition ^h|Data type and values ^h|Multiplicity and use
+
+|Body |The contents of this element to be used as the body of the HTTP request message to be sent to the service identified in ../Reference/@href. For example, it could be an XML encoded WFS request using HTTP/POST. |Any type |Zero or one (conditional) footnote:requestbody-fn-a[One and only one of these items shall be included.]
+|BodyReference |Reference to a remote document to be used as the body of an HTTP/POST request message to the service identified in the href element in the Reference structure (<<tab-parts-of-the-reference-structure>>). |BodyReference, see <<tab-parts-of-the-bodyreference-structure>>. |Zero or one (conditional) footnote:requestbody-fn-a[]
+|===
+
+[[tab-parts-of-the-bodyreference-structure]]
+.Parts of the BodyReference structure
+[cols="4"]
+|===
+^h|Names ^h|Definition ^h|Data type and values ^h|Multiplicity and use
+
+|href |HTTP URI that points to the remote resource where the request body may be retrieved. |HTTP URI |One (mandatory)
+|===
+
+
+
+[[annex-abstract-test-suite]]
+[appendix, obligation=normative]
+== Abstract Test Suite
+
+Tests and requirement identifiers below are relative to *http://www.opengis.net/spec/WPS/2.0*
+
+[[annex-subsec-basic-wps-conformace-class]]
+=== Basic WPS (Conformance Class)
+The OGC URI identifier of this conformance class is: *http://www.opengis.net/spec/WPS/2.0/conf/service/profile/basic-wps*
+
+[requeriment,type="verification"]
+====
+
+[requirement,type="general",label="Test id"]
+======
+conf/service/profile/basic-wps
+======
+
+[recommendation,type="general",label="Test purpose"]
+======
+Verify that the server implements the Basic WPS conformance class.
+======
+
+[requirement,type="general",label="Test method"]
+======
+Verify that the server implements the Synchronous WPS and/or the Asynchronous WPS conformance class. Verify that the requests and responses to a supported operation are syntactically correct. Verify that the service supports the Synchronous WPS Conformance class, the Asynchronous WPS Conformance class or both. Verify that all process offerings implement the native process model. 
+======
+
+====
+
+
+[[annex-xml-examples]]
+[appendix, obligation=informative]
+== XML Examples
+
+[[annex-subsec-data-types]]
+=== Data Types
+
+==== Complex Data Description
+
+[%unnumbered]
+[source,xml]
+----
+<wps:ComplexData>
+  <wps:Format mimeType="application/geotiff" encoding="raw"
+default="true"/>
+  <wps:Format mimeType="application/geotiff" encoding="base64"/>
+</wps:ComplexData>
+----
+
+
+==== Literal Data Description
+
+[%unnumbered]
+[source,xml]
+----
+<wps:LiteralData>
+  <wps:Format mimeType="text/plain" default="true"/>
+  <wps:Format mimeType="text/xml"/>
+  <LiteralDataDomain default="true">
+    <ows:AllowedValues>
+      <ows:Range>
+        <ows:MinimumValue>1</ows:MinimumValue>
+        <ows:MaximumValue>1000</ows:MaximumValue>
+      </ows:Range>
+    </ows:AllowedValues>
+    <ows:DataType
+ows:reference="http://www.w3.org/2001/XMLSchema#float">float
+</ows:DataType>
+    <ows:UOM>meters</ows:UOM>
+    <ows:DefaultValue>100</ows:DefaultValue>
+  </LiteralDataDomain>
+  <LiteralDataDomain>
+    <ows:AllowedValues>
+      <ows:Range>
+        <ows:MinimumValue>1</ows:MinimumValue>
+        <ows:MaximumValue>3000</ows:MaximumValue>
+      </ows:Range>
+    </ows:AllowedValues>
+    <ows:DataType
+ows:reference="http://www.w3.org/2001/XMLSchema#float">float
+</ows:DataType>
+    <ows:UOM>feet</ows:UOM>
+  </LiteralDataDomain>
+</wps:LiteralData>
+----
+
+
+==== Literal data values
+
+[%unnumbered]
+[source,xml]
+----
+<LiteralValue
+  dataType=http://www.w3.org/2001/XMLSchema#double
+  uom="meter">
+    42.1
+</LiteralValue>
+
+<LiteralValue
+  dataType="http://www.w3.org/2001/XMLSchema#string">
+    ArableLand
+</LiteralValue>
+----
+
+
+==== BoundingBox Data Description
+
+[%unnumbered]
+[source,xml]
+----
+<wps:BoundingBoxData>
+  <wps:Format mimeType="text/plain" default="true"/>
+  <wps:Format mimeType="text/xml"/>
+  <wps:SupportedCRS default="true">EPSG:4326</wps:SupportedCRS>
+  <wps:SupportedCRS>
+    http://www.opengis.net/def/crs/EPSG/0/4258
+  </wps:SupportedCRS>
+</wps:BoundingBoxData>
+----
+
+
+==== BoundingBox Data Values
+
+[%unnumbered]
+[source,xml]
+----
+<ows:BoundingBox crs="EPSG:4326">
+  <ows:LowerCorner>51.9 7.0</ows:LowerCorner>
+  <ows:UpperCorner>53.0 8.0</ows:UpperCorner>
+</ows:BoundingBox>
+
+<ows:BoundingBox
+   crs="http://www.opengis.net/def/crs/EPSG/0/4258">
+  <ows:LowerCorner>51.9 7.0</ows:LowerCorner>
+  <ows:UpperCorner>53.0 8.0</ows:UpperCorner>
+</ows:BoundingBox>
+----
+
+
+
+
+[appendix]
+== Bibliography
+
+[bibliography]
+* [[[dcat,W3C vocab-dcat]]], W3C: *Data Catalog Vocabulary,* W3C Recommendation 16 January 2014, https://www.w3.org/TR/vocab-dcat/
+
+* [[[iso19101, ISO 19101]]], ISO: *ISO 19101-1:2014 -- Geographic information -- Reference model -- Part 1: Fundamentals* https://www.iso.org/standard/59164.html

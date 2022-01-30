@@ -1,0 +1,45 @@
+= OGC(R) WPS 2.0.2 Interface Standard Corrigendum 2
+:edition: 2.0.2
+:doctype: standard
+:committee: technical
+:workingGroup:
+:fullname: Your name 
+:role: editor
+:docnumber: 14-065r2
+:external-id: http://www.opengis.net/doc/IS/wps/2.0.2
+:published-date: 2015-03-05
+:copyright-year: 2015
+:mn-document-class: ogc
+:status: published
+:language: en
+:imagesdir: images
+:local-cache-only:
+:data-uri-image:
+
+// Ruby code
+# The Greeter class
+class Greeter
+  def initialize(world)
+    @world = world.capitalize
+  end
+
+  def salute
+    puts "Hello #{@world}!"
+  end
+end
+
+# Create a new object
+g = Greeter.new("world")
+
+# Output "Hello World!"
+g.salute
+
+// Python code
+print('Hello, World!')
+
+// Java code
+class HelloWorld {
+    public static void main(String[] args) {
+        System.out.println("Hello, World!"); 
+    }
+}

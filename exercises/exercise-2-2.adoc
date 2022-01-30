@@ -1,0 +1,100 @@
+= OGC(R) WPS 2.0.2 Interface Standard Corrigendum 2
+:edition: 2.0.2
+:doctype: standard
+:committee: technical
+:workingGroup:
+:fullname: Your name 
+:role: editor
+:docnumber: 14-065r2
+:external-id: http://www.opengis.net/doc/IS/wps/2.0.2
+:published-date: 2015-03-05
+:copyright-year: 2015
+:mn-document-class: ogc
+:status: published
+:language: en
+:imagesdir: images
+:local-cache-only:
+:data-uri-image:
+
+// Add an Abstract section here
+
+In many cases geospatial or location data, including data from sensors, must be processed before the information can be used effectively. The OGC Web Processing Service (WPS) Interface Standard provides a standard interface that simplifies the task of making simple or complex computational processing services accessible via web services. Such services include well-known processes found in GIS software as well as specialized processes for spatio-temporal modeling and simulation. While the OGC WPS standard was designed with spatial processing in mind, it can also be used to readily insert non-spatial processing tasks into a web services environment.
+
+//Add an Introduction section here
+
+
+The WPS standard provides a robust, interoperable, and versatile protocol for process execution on web services. It supports both immediate processing for computational tasks that take little time and asynchronous processing for more complex and time consuming tasks. Moreover, the WPS standard defines a general process model that is designed to provide an interoperable description of processing functions. It is intended to support process cataloguing and discovery in a distributed environment.
+
+//Add a scope section here
+
+This document specifies the interface to a general purpose Web Processing Service (WPS). [...]
+
+The specification uses a core and extensions model to organize its features:
+
+. A core conceptual model, defining basic requirements for a web based processing service,
+. A process model to support the description and discovery of processes on the web,
+. A basic data model that supports arbitrary (standard or non-standard) data formats for inputs and outputs,
+. A WPS service model and encoding based on OGC baseline standards, and
+. A Dismiss extension to allow clients to terminate asynchronous processing jobs.
+
+
+// Add a conformance section here
+
+Conformance with this standard shall be checked using all the relevant tests specified in <<annex-abstract-test-suite>> (normative) of this document. The framework, concepts, and methodology for testing, and the criteria to be achieved to claim conformance are specified in the OGC Compliance Testing Policies and Procedures and the OGC Compliance Testing web site footnote:[www.opengeospatial.org/cite]. [...]
+
+// Add a normative references section here
+
+
+* [[[ogc-06-121r9,OGC 06-121r9]]], OGC 06-121r9, OGC Web Service Common Specification, version 2.0
+
+* [[[ogc-08-131r3,OGC 08-131r3]]], OGC 08-131r3 -- The Specification Model -- A Standard for Modular Specifications
+
+* [[[ietf-rfc-4646,IETF RFC 4646]]], IETF RFC 4646: Tags for Identifying Languages
+
+* [[[ietf-rfc-3986,IETF RFC 3986]]], IETF RFC 3986: Uniform Resource Identifier (URI): Generic Syntax
+
+* [[[iso-8601-2004,ISO 8601:2004]]], ISO 8601:2004, Data elements and interchange formats -- Information interchange -- Representation of dates and times
+
+* [[[xml-schema-part2,W3C xmlschema-2]]], XML Schema Part 2: Datatypes Second Edition, W3C Recommendation 28 October 2004.
+
+//Add a Terms and definitions section here
+
+This document uses the terms defined in Sub-clause 5.3 of [OGC 06-121r9], which is based on the ISO/IEC Directives, Part 2, Rules for the structure and drafting of International Standards. In particular, the word "`shall`" (not "`must`") is the verb form used to indicate a requirement to be strictly followed to conform to this standard.
+
+For the purposes of this document, the following additional terms and definitions apply. [...]
+
+[.source]
+<<dcat>>
+
+NOTE: The use of 'collection' in the definition from <<dcat,[DCAT]>> is broader than the use of the term collection in this specification.
+
+=== distribution
+
+represents an accessible form of a *dataset*
+
+[.source]
+<<dcat>>
+
+[example]
+a downloadable file, an RSS feed or an API.
+
+=== feature
+alt:[characteristic]
+deprecated:[character]
+
+abstraction of real world phenomena
+
+[.source]
+<<iso19101,ISO 19101-1:2014>>, added alternative term for "`characteristic`" and deprecated term "`character`".
+
+NOTE: For those unfamiliar with the term 'feature', the explanations on https://www.w3.org/TR/sdw-bp/#spatial-things-features-and-geometry[Spatial Things, Features and Geometry] in the W3C/OGC Spatial Data on the Web Best Practice document provide more detail.
+
+
+
+[appendix]
+//Add a bibliography section here
+
+
+* [[[dcat,W3C vocab-dcat]]], W3C: *Data Catalog Vocabulary,* W3C Recommendation 16 January 2014, https://www.w3.org/TR/vocab-dcat/
+
+* [[[iso19101, ISO 19101]]], ISO: *ISO 19101-1:2014 -- Geographic information -- Reference model -- Part 1: Fundamentals* https://www.iso.org/standard/59164.html

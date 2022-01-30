@@ -1,0 +1,27 @@
+= OGC(R) WPS 2.0.2 Interface Standard Corrigendum 2
+:edition: 2.0.2
+:doctype: standard
+:committee: technical
+:workingGroup:
+:fullname: Your name 
+:role: editor
+:docnumber: 14-065r2
+:external-id: http://www.opengis.net/doc/IS/wps/2.0.2
+:published-date: 2015-03-05
+:copyright-year: 2015
+:mn-document-class: ogc
+:status: published
+:language: en
+:imagesdir: images
+:local-cache-only:
+:data-uri-image:
+
+
+== Introduction
+
+The following admonitions apply to to the entire standard.
+
+Before you make any changes to your configuration, always make sure you have a backup of your system. Configuration errors can result in data loss.
+
+A WPS server can change its offering at any time, in particular between a GetCapabilities, a subsequent DescribeProcess, and a subsequent Execute request.
+Any quality of service (QoS) guarantees are within the responsibilities of the service provider and not covered by this standard.

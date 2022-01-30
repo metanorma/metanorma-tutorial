@@ -1,0 +1,30 @@
+= OGC(R) WPS 2.0.2 Interface Standard Corrigendum 2
+:edition: 2.0.2
+:doctype: standard
+:committee: technical
+:workingGroup:
+:fullname: Your name 
+:role: editor
+:docnumber: 14-065r2
+:external-id: http://www.opengis.net/doc/IS/wps/2.0.2
+:published-date: 2015-03-05
+:copyright-year: 2015
+:mn-document-class: ogc
+:status: published
+:language: en
+:imagesdir: images
+:local-cache-only:
+:data-uri-image:
+
+== Introduction
+=== About the Open Geospatial Consortium (OGC)
+// Excerpt from https://www.ogc.org/
+
+Your Global Resource for Geospatial Information and Standards
+
+Welcome to OGC, a worldwide commnuity committed to improving access to geospatial, or location information. 
+We connect people, communities, and technology to solve global challenges and address everyday needs.
+The organization represents over 500 businesses, government agencys, research organizations, and universities united with a desire to make location information FAIR – Findable, Accessible, Interoperable, and Reusable.
+
+Our community creates free, publicly available geospatial standards that enable new technologies.
+OGC also manages an agile and colaborative research & development process - the OGC Innovation Program - that anticipates and solves real-world geospatial challenges experienced by our members.

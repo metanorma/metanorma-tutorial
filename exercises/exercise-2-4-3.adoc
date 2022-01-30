@@ -1,0 +1,68 @@
+= OGC(R) WPS 2.0.2 Interface Standard Corrigendum 2
+:edition: 2.0.2
+:doctype: standard
+:committee: technical
+:workingGroup:
+:fullname: Your name 
+:role: editor
+:docnumber: 14-065r2
+:external-id: http://www.opengis.net/doc/IS/wps/2.0.2
+:published-date: 2015-03-05
+:copyright-year: 2015
+:mn-document-class: ogc
+:status: published
+:language: en
+:imagesdir: images
+:local-cache-only:
+:data-uri-image:
+
+
+== Terms and Definitions
+
+=== dataset
+
+collection of data, published or curated by a single agent, and available for access or download in one or more formats
+
+[.source]
+<<dcat>>
+
+=== feature
+alt:[characteristic]
+deprecated:[character]
+
+abstraction of real world phenomena
+
+[.source]
+<<iso19101,ISO 19101-1:2014>>, added alternative term for "`characteristic`" and deprecated term "`character`".
+
+...
+
+== Requirements
+
+...
+
+The DescriptionType shall comply with the structure defined in and ANCHOR.
+
+
+// Enter anchor here
+.Properties of the DescriptionType structure
+[cols="4"]
+|===
+^h|Names ^h|Definition ^h|Data type and values ^h|Multiplicity and use
+
+|Title |Title of the process, input, and output. Normally available for display to a human. |ows:Title |One (mandatory)
+|Abstract |Brief narrative description of a process, input, and output. Normally available for display to a human. |ows:Abstract |Zero or one (optional) Include when available and useful.
+|Keywords |Keywords that characterize a process, its inputs, and outputs. |ows:Keywords |Zero or more (optional) Include when available and useful.
+|Identifier |Unambiguous identifier of a process, input, and output. |ows:Identifier Value is a URI or HTTP-URI footnote:[Additional content such as separate code space and version attributes in the Identifier element are not allowed.] |One (mandatory)
+|Metadata |Reference to additional metadata about this item. |ows:Metadata Allowed values are specified in tab-properties-of-the-metadata-structure. |Zero or more (optional)
+|===
+
+...
+
+
+
+[bibliography]
+== Bibliography
+
+// Add references here
+

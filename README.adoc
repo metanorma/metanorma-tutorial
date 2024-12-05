@@ -1,5 +1,7 @@
 = How to use the Metanorma tutorial repository
 
+WARNING: This repository is OBSOLETE. Please refer to latest documentation on https://www.metanorma.org. Thanks!
+
 This repository contains exercises for the beginner https://www.metanorma.org/tutorial/tutorial_start[Metanorma tutorial]. 
 The document is based on OGC's http://docs.opengeospatial.org/is/14-065/14-065.html["OGC(R) WPS 2.0.2 Interface Standard Corrigendum 2"] and is written in https://github.com/metanorma/metanorma-ogc[Metanorma-OGC]. 
 Please note that standard organization has different needs. Therefore, each Metanorma AsciiDoc flavor has slightly different document headers (metadata) and may require a different document structure.
